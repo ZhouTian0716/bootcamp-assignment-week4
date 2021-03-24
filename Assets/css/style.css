@@ -1,0 +1,65 @@
+body{
+  margin: 0;
+  padding: 20px;
+  font-family: Arial;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+}
+
+main{
+  margin: 0 23vw 0 23vw;
+}
+
+.h1El{
+  text-align: center;
+  margin: 100px 0px 40px 0px;
+  font-size: 220%;
+}
+
+#pElement{
+  text-align: center;
+  font-weight: 700;
+}
+
+#startButtonContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button{
+  background-color: purple;
+  color: white;
+  margin: 40px 0px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.button:hover{
+  cursor:pointer;
+  background-color: rgba(128, 0, 128, 0.65);
+}
+ 
+
+li{
+  background-color: purple;
+  color: white;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 10px 0px;
+}
+
+li:hover{
+  cursor:pointer;
+  background-color: rgba(128, 0, 128, 0.65);
+}
+
+ol{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
