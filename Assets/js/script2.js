@@ -2,7 +2,7 @@
 var scoreListEl = document.querySelector("#scoreList");   //scoreList
 var gobackButton = document.querySelector("#goback");  //Button to return landing page
 var clearButton = document.querySelector("#clear");  //Button to clear scores
-var highscores = ["abc win 200", "cde win 300","fgh win 400","fgh win 400"];
+
 
 var highscores = JSON.parse(localStorage.getItem("myHighscore"));
 
@@ -25,7 +25,7 @@ function renderHighScores() {
     var li =[];
     for (var i = 0; i < highscores.length; i++) {
       li[i]= document.createElement("li");
-      li[i].textContent=highscores[i].userName;
+      li[i].textContent=highscores[i];
       scoreListEl.appendChild(li[i]);
     }
 }

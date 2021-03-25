@@ -160,7 +160,7 @@ function submit(){
       //window.location.assign("highscore.html");  
     var scoreObject={
         userName:userNameInput.value,
-        score:secondsLeft
+        score:userNameInput.value
     }
     
     highscores.push(JSON.stringify(scoreObject));
