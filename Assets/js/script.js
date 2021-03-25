@@ -1,11 +1,25 @@
-var startButton = document.querySelector("#startQuiz")  //Start Quiz Button
-var h1El = document.querySelector(".h1El")  //Quiz Title
-var pEl = document.querySelector("#pElement")    //Quiz instruction message
-var timeEl = document.querySelector("#timer")   //Time Counting
+// variables to reference DOM elements
+var timeEl = document.querySelector("#timer");   //Time Counting
+var startButton = document.querySelector("#startQuiz");  //Start Quiz Button
+var submitButton = document.querySelector("#submit");  //Submit Quiz Button
+var qTitle = document.querySelector("#qTitle");  //Question Title
+var choicesEl = document.querySelector("#choices"); //Question Choices
+var messageEl = document.querySelector("#message"); //message of correct or wrong
 var totalTime = document.querySelector("#totalTime");
-var main= document.querySelector("main");
-totalTime.textContent = 100000;    //Set the Quiz Time here.
+totalTime.textContent = 2000;    //Set the Quiz Time here.
 var secondsLeft = parseInt(totalTime.textContent);
+var landingPageEl = document.querySelector(".landingPage"); //Set up for hide/unhide
+var questionPageEl = document.querySelector(".questionPage"); //Set up for hide/unhide
+var endPageEl = document.querySelector(".endPage"); //Set up for hide/unhide
+var pEl = document.querySelector("#userScore");
+var userNameInput = document.querySelector("#userName");
+var isDone = false;
+
+var highscores = [];
+
+//var highscores = localStorage.getItem("myHighscore");
+
+
 //QUESTIONS
 //------------------------------------
 var questions=[
@@ -35,12 +49,14 @@ var questions=[
         answer:"A.setInterval"
     },
 ]
+
+var j = 0; //set questions array index
 //------------------------------------
 
 function endPage(){
-    h1El.textContent = "All done!";
-    pEl.setAttribute("style", "display: block; text-align: left");
-    pEl.textContent = "Your final score is " + secondsLeft + ".";
+    questionPageEl.setAttribute("style", "display: none");
+    endPageEl.setAttribute("style", "display: block");
+    pEl.textContent = "Your final score is " + secondsLeft + ".";   
 }
 
 
@@ -52,7 +68,7 @@ function setTime() {
       secondsLeft--;
       timeEl.textContent = secondsLeft 
   
-      if(secondsLeft === 0) {
+      if(isDone || secondsLeft <= 0) {
         clearInterval(timerInterval);
         endPage();
       }
@@ -67,22 +83,25 @@ startButton.addEventListener("click", setTime);
 startButton.addEventListener("click", startQuiz);
 
 function startQuiz(){
-    
-    h1El.textContent = questions[0].title;
-    h1El.setAttribute("style", "font-size: 180%; text-align: left");
-    pEl.setAttribute("style", "display: none");
-    startButton.remove();
-    
-    var listEl = document.createElement("ol");
-    main.appendChild(listEl);
+    landingPageEl.setAttribute("style", "display: none");
+    questionPageEl.setAttribute("style", "display: block");
+    qTitle.textContent = questions[j].title;
     var li = ['li1', 'li2', 'li3', 'li4'];
     for (var i=0; i<li.length; i++){
         li[i] = document.createElement("li");
-        li[i].textContent = questions[0].choices[i];
-        listEl.appendChild(li[i]);
+        li[i].textContent = questions[j].choices[i];
+        choicesEl.appendChild(li[i]);
     }
+
     
     
+    //FUNCTION TO GET NEXT QUESTION
+    function nextQuestion(){
+        qTitle.textContent = questions[j].title;
+        for (var i=0; i<li.length; i++){
+            li[i].textContent = questions[j].choices[i];
+        }
+    }
    
     
     
@@ -92,22 +111,29 @@ function startQuiz(){
     //EventListener is set to ol Element
 
     function clickOnQuest(event){
+        
         var element = event.target;
-        listEl.disabled = true;
+        var userAns = element.textContent;
         if (element.matches("li")){
-            
-            var userAns = element.textContent;
-            var message = document.createElement("p"); 
-            main.appendChild(message);
-            //Actions for right Ans
-            if (userAns === questions[0].answer){
-                listEl.setAttribute("style", "border-bottom: 5px solid black"); 
-                message.textContent = "Correct!"
+            //Check user Answer
+            if (userAns === questions[j].answer){
+                messageEl.textContent = "Correct!"
             }
-            //Actions for Wrong Ans
             else{
-                listEl.setAttribute("style", "border-bottom: 5px solid black");
-                message.textContent = "Wrong!"
+                secondsLeft = secondsLeft - 15;
+                messageEl.textContent = "Wrong!"
+            };
+            messageEl.setAttribute("style", "opacity: 1");
+            
+            //Move to next question
+            j++;
+            if(j<questions.length){
+            nextQuestion();  
+        
+            }
+            else { 
+                isDone = true; 
+                endPage();
             }
             
         }
@@ -116,7 +142,11 @@ function startQuiz(){
         }
     }
     
-    listEl.addEventListener("click", clickOnQuest);
+    choicesEl.addEventListener("click", clickOnQuest);
+    qTitle.addEventListener("click", checker);
+    function checker(){
+        messageEl.setAttribute("style", "opacity: 0");
+    }
     
 
 
@@ -125,11 +155,31 @@ function startQuiz(){
 
 
 
+function submit(){
+
+      //window.location.assign("highscore.html");  
+    var scoreObject={
+        userName:userNameInput.value,
+        score:secondsLeft
+    }
+    
+    highscores.push(JSON.stringify(scoreObject));
+    console.log(highscores);
+    userNameInput.value = "";
+    localStorage.setItem("myHighscore", highscores);
+
+}
+
+
+submitButton.addEventListener("click", submit);
 
 
 
 
-
+// var newScore={
+//     initial:userNameInput.textContent,
+//     score:secondsLeft
+// };
 
 
 

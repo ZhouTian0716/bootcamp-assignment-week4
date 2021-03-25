@@ -10,18 +10,39 @@
 </head>
 <body>
     <header>
-        <a href="highscore.html" target="_blank">View Highscores</a>
+        <a href="highscore.html">View Highscores</a>
         <span>Time Left:<span id="timer"></span></span>
     </header>
     <main>
-        <h1 class="h1El">Coding Quiz Challenge</h1>
-        <p id="pElement">
-            Try to answer the following code-related questions within the time limit. 
+        <!-- landingPage  -->
+        <div class ="landingPage">
+            <h1 class="title-1">Coding Quiz Challenge</h1>
+            <p id="instruction">
+            Instruction:Try to answer the following code-related questions within the time limit. 
             Keep in mind that incorrect answers will penalize your score/time by 15 seconds! 
             You have <span id="totalTime"></span> seconds in total.
-        </p>
-        <div id="startButtonContainer"><button class="button" id="startQuiz">Start Quiz</button></div>
-    </main>
-    <script src="/Assets/js/script.js"></script>
+            </p>
+            <button class="button" id="startQuiz">Start Quiz</button>
+        </div>
+
+        <!-- questionPage  -->
+        <div class = "questionPage">
+            <h1 class="title-2" id="qTitle"></h1>
+            <ol id="choices"></ol>
+            <p id="message"></p>
+        </div>
+
+        <!-- endPage  -->
+        <div class = "endPage">
+            <h1 class = "title-2">All Done!</h1>
+            <p id="userScore"></p>
+            <div id="container-1">
+                <span>Enter Initials:</span>
+                <input id="userName" type="text"/>
+                <button class="button" id="submit">Submit</button>
+            </div>
+        </div>
+    </main> 
+    <script src="Assets/js/script.js"></script>
 </body>
 </html>
