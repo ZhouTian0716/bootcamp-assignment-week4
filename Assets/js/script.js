@@ -5,63 +5,20 @@ var submitButton = document.querySelector("#submit");  //Submit Quiz Button
 var qTitle = document.querySelector("#qTitle");  //Question Title
 var choicesEl = document.querySelector("#choices"); //Question Choices
 var messageEl = document.querySelector("#message"); //message of correct or wrong
-var totalTime = document.querySelector("#totalTime");
+var totalTime = document.querySelector("#totalTime"); //totalTime on landingPage
 totalTime.textContent = 150;    //Set the Quiz Time here.
 var secondsLeft = parseInt(totalTime.textContent);
 var landingPageEl = document.querySelector(".landingPage"); //Set up for hide/unhide
 var questionPageEl = document.querySelector(".questionPage"); //Set up for hide/unhide
 var endPageEl = document.querySelector(".endPage"); //Set up for hide/unhide
-var pEl = document.querySelector("#userScore");
-var userNameInput = document.querySelector("#userName");
+var pEl = document.querySelector("#userScore"); //userScore message on endPage
+var userNameInput = document.querySelector("#userName"); //userInitial here
 var isDone = false;
 
-//localStorage.setItem("highScoresString", highScores);
-
-var highScores = [];
-
-
-// Calls init to retrieve data to the page on load
-init()
-
-function init(){
-    var storedScores = JSON.parse(localStorage.getItem("highScoresString")); 
-    if (storedScores !== null){
-       highScores = storedScores; 
-    } else{ return; }
-}
-
-
-
-
-
-
-
-
-
-
-// These functions are used by init
-function getWins() {
-    // Get stored value from client storage, if it exists
-    var storedWins = localStorage.getItem("winCount");
-    // If stored value doesn't exist, set counter to 0
-    if (storedWins === null) {
-      winCounter = 0;
-    } else {
-      // If a value is retrieved from client storage set the winCounter to that value
-      winCounter = storedWins;
-    }
-    //Render win count to page
-    win.textContent = winCounter;
-  }
-
-
-
-
-
-
+var highScores = []; //empty array for localStorage
 
 //QUESTIONS
-//------------------------------------
+//------------------------------------------------------------------------------------------------
 var questions=[
     {
         title:"Q1: Commonly used data types DO NOT include:",
@@ -91,7 +48,19 @@ var questions=[
 ]
 
 var j = 0; //set questions array index
-//------------------------------------
+//--------------------------------------------------------------------------------------------
+
+
+// Calls init to retrieve data to the page on load
+init();
+
+function init(){
+    var storedScores = JSON.parse(localStorage.getItem("highScoresString")); 
+    if (storedScores !== null){
+       highScores = storedScores; 
+    } else{ return; }
+}
+//------------------------------------------------------------------------------------------
 
 function endPage(){
     questionPageEl.setAttribute("style", "display: none");
@@ -99,9 +68,7 @@ function endPage(){
     pEl.textContent = "Your final score is " + secondsLeft + ".";   
 }
 
-
-
-
+//------------------------------------------------------------------------------------------
 
 function setTime() {
     var timerInterval = setInterval(function() {
@@ -117,8 +84,7 @@ function setTime() {
 
 startButton.addEventListener("click", setTime);
 
-
-
+//------------------------------------------------------------------------------------------
 
 startButton.addEventListener("click", startQuiz);
 
@@ -129,12 +95,10 @@ function startQuiz(){
     var li = ['li1', 'li2', 'li3', 'li4'];
     for (var i=0; i<li.length; i++){
         li[i] = document.createElement("li");
+        li[i].classList.add('choiceList');
         li[i].textContent = questions[j].choices[i];
         choicesEl.appendChild(li[i]);
     }
-
-    
-    
     //FUNCTION TO GET NEXT QUESTION
     function nextQuestion(){
         qTitle.textContent = questions[j].title;
@@ -143,10 +107,6 @@ function startQuiz(){
         }
     }
    
-    
-    
-    
-
     //FUNCTION CLICKING ON QUESTIONS
     //EventListener is set to ol Element
 
@@ -169,31 +129,23 @@ function startQuiz(){
             j++;
             if(j<questions.length){
             nextQuestion();  
-        
             }
             else { 
                 isDone = true; 
                 endPage();
             }
-            
         }
         else {
             return;
         }
     }
-    
     choicesEl.addEventListener("click", clickOnQuest);
     qTitle.addEventListener("click", checker);
     function checker(){
         messageEl.setAttribute("style", "opacity: 0");
     }
-    
-
-
-
 }
-
-
+//------------------------------------------------------------------------------------------
 
 function submit(){
     var scoreOb = {
@@ -208,9 +160,15 @@ function submit(){
     window.location.assign("highscore.html");  
 }
 
-
+//------------------------------------------------------------------------------------------
+// Submit By Click or Enter
 submitButton.addEventListener("click", submit);
 
+userNameInput.addEventListener("keydown", function(e){
+    if (13==e.keyCode){
+        submit();
+    }
+});
 
 
 
