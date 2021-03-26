@@ -6,7 +6,7 @@ var qTitle = document.querySelector("#qTitle");  //Question Title
 var choicesEl = document.querySelector("#choices"); //Question Choices
 var messageEl = document.querySelector("#message"); //message of correct or wrong
 var totalTime = document.querySelector("#totalTime");
-totalTime.textContent = 2000;    //Set the Quiz Time here.
+totalTime.textContent = 150;    //Set the Quiz Time here.
 var secondsLeft = parseInt(totalTime.textContent);
 var landingPageEl = document.querySelector(".landingPage"); //Set up for hide/unhide
 var questionPageEl = document.querySelector(".questionPage"); //Set up for hide/unhide
@@ -15,9 +15,49 @@ var pEl = document.querySelector("#userScore");
 var userNameInput = document.querySelector("#userName");
 var isDone = false;
 
-var highscores = [];
+//localStorage.setItem("highScoresString", highScores);
 
-//var highscores = localStorage.getItem("myHighscore");
+var highScores = [];
+
+
+// Calls init to retrieve data to the page on load
+init()
+
+function init(){
+    var storedScores = JSON.parse(localStorage.getItem("highScoresString")); 
+    if (storedScores !== null){
+       highScores = storedScores; 
+    } else{ return; }
+}
+
+
+
+
+
+
+
+
+
+
+// These functions are used by init
+function getWins() {
+    // Get stored value from client storage, if it exists
+    var storedWins = localStorage.getItem("winCount");
+    // If stored value doesn't exist, set counter to 0
+    if (storedWins === null) {
+      winCounter = 0;
+    } else {
+      // If a value is retrieved from client storage set the winCounter to that value
+      winCounter = storedWins;
+    }
+    //Render win count to page
+    win.textContent = winCounter;
+  }
+
+
+
+
+
 
 
 //QUESTIONS
@@ -156,18 +196,16 @@ function startQuiz(){
 
 
 function submit(){
-
-      //window.location.assign("highscore.html");  
-    var scoreObject={
+    var scoreOb = {
         userName:userNameInput.value,
-        score:userNameInput.value
+        score:secondsLeft
     }
-    
-    highscores.push(JSON.stringify(scoreObject));
-    console.log(highscores);
     userNameInput.value = "";
-    localStorage.setItem("myHighscore", highscores);
+    highScores.push(scoreOb);
+    highScoresString = JSON.stringify(highScores);
+    localStorage.setItem("highScoresString", highScoresString);
 
+    window.location.assign("highscore.html");  
 }
 
 
@@ -176,10 +214,6 @@ submitButton.addEventListener("click", submit);
 
 
 
-// var newScore={
-//     initial:userNameInput.textContent,
-//     score:secondsLeft
-// };
 
 
 

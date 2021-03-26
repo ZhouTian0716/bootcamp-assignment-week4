@@ -3,8 +3,8 @@ var scoreListEl = document.querySelector("#scoreList");   //scoreList
 var gobackButton = document.querySelector("#goback");  //Button to return landing page
 var clearButton = document.querySelector("#clear");  //Button to clear scores
 
+var storedScores = JSON.parse(localStorage.getItem("highScoresString")); // Array contains Objects of user names and scores
 
-var highscores = JSON.parse(localStorage.getItem("myHighscore"));
 
 
 
@@ -21,18 +21,22 @@ function goback(){
 
 renderHighScores();
 
+
 function renderHighScores() {
-    var li =[];
-    for (var i = 0; i < highscores.length; i++) {
-      li[i]= document.createElement("li");
-      li[i].textContent=highscores[i];
-      scoreListEl.appendChild(li[i]);
+    var scoreList = [];
+    scoreList.length = storedScores.length;
+    for (var i = 0; i < storedScores.length; i++) {
+       
+        scoreList[i] = document.createElement("li");
+        scoreList[i].textContent = storedScores[i].userName + "  got  " + storedScores[i].score + "  points.";
+      scoreListEl.appendChild(scoreList[i]);
     }
 }
 
 
 function clearScores(){
-    highscores = [];
+    localStorage.setItem("highScoresString" , null);
+    window.location.assign("highscore.html");
 }
 
 clearButton.addEventListener("click", clearScores);
